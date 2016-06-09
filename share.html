@@ -85,6 +85,7 @@
 
         function target_to_difficulty(target) { return (0xffff0000 * Math.pow(2, 256-64) + 1)/(target + 1); }
 
+        var latest_hash = null;
         var current_hash = null;
         var shares_count = 0;
 
@@ -162,7 +163,7 @@
             if(share_hash == null || share_hash == "") {
                 d3.json('../web/best_share_hash', function(hash) {
                     share_hash = hash.toString();
-                    if (share_hash != current_hash) {
+                    if (share_hash != latest_hash) {
                         var b = d3.select('#share-box');
                         b.selectAll('*').remove();
                         b.append('h1').text('Last 10 shares')
@@ -175,7 +176,7 @@
                         headtr.append('th').text('Payout address');
                         tbody = table.append('tbody');
                         shares_count = 0;
-                        current_hash = share_hash;
+                        latest_hash = share_hash;
                         addrow(tbody, share_hash, currency_info);
                     }
                 });
