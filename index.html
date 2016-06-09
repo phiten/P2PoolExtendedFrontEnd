@@ -28,6 +28,10 @@
             fill: none;
         }
 
+        .monospace {
+            font-family: monospace;
+        }
+
         text {
             font-family: Sans-serif;
             font-size: 12px;
@@ -233,7 +237,8 @@
                 <div class="nav-collapse collapse">
                     <ul class="nav">
                         <li class="active"><a href="index.html">Stats</a></li>
-                        <li><a href="graphs.html">Graph</a></li>
+                        <li><a href="graphs.html">Graphs</a></li>
+                        <li><a href="share.html">Shares</a></li>
                         <li><a href="https://github.com/veqtrus/P2PoolExtendedFrontEnd">Contact</a></li>
                     </ul>
                 </div>
@@ -353,13 +358,14 @@
             </table>
         </div>
     </div>
-    <div style="border-bottom: 1px solid #ddd;"></div>
-    <center>
-        <tt>P2Pool version: <span id="version"></span></tt><br/>
-		<tt>Interface by hardcpp <a href="https://github.com/hardcpp/P2PoolExtendedFrontEnd">https://github.com/hardcpp/P2PoolExtendedFrontEnd</a></tt><br/>
-		<tt>Donate if you love it (LTC LdKxw2JewLdo1atDsQ33LiCG9ZUDQ4XmPb) (BTC 1FBa12SPET7YRGHoTXyawp1EBJyFPzju31)</tt>
-	</center>
-    <br />
+    <div class="monospace" style="border-top: 1px solid #ddd; text-align: center;">
+        P2Pool version: <span id="version"></span><br/>
+        Interface by veqtrus <a href="https://github.com/veqtrus/P2PoolExtendedFrontEnd">https://github.com/veqtrus/P2PoolExtendedFrontEnd</a><br/>
+        Donate if you love it (BTC 14qxcy8JXwRP2dR3M7Zan2XxTG1xvKT4co)<br/>
+        Original interface by hardcpp <a href="https://github.com/hardcpp/P2PoolExtendedFrontEnd">https://github.com/hardcpp/P2PoolExtendedFrontEnd</a><br/>
+        Donate if you love it (LTC LdKxw2JewLdo1atDsQ33LiCG9ZUDQ4XmPb) (BTC 1FBa12SPET7YRGHoTXyawp1EBJyFPzju31)<br/>
+    </div>
+
     <script type="text/javascript">
         function compose() {
             var funcs = arguments;
