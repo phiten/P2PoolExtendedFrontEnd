@@ -134,12 +134,12 @@
 			</div>
 			<br/>
 			<div class="well" style="width:1000px"> 	
-				<h2>Bitcoind GetBlockTemplate Latency</h2>
+				<h2>Bitcoind GetBlockTemplate latency</h2>
 				<svg id="getwork_latency"></svg>
 			</div>
 			<br/>
 			<div class="well" style="width:1000px"> 	
-				<h2>Memory Usage</h2>
+				<h2>Memory usage</h2>
 				<svg id="memory_usage"></svg>
 			</div>
 		</center>
@@ -220,7 +220,7 @@
             d3.select(showhide).append("a")
                 .text('Show/hide table')
                 .on('click', function() { table_div.style.display = table_div.style.display == "block" ? "none" : "block" })
-                .attr("style", "color:blue;text-decoration:underline;cursor:pointer");
+                .attr("style", "cursor:pointer");
             if(stack) {
                 d3.select(showhide).append('span').text(' ');
                 d3.select(showhide).append("a")
@@ -230,7 +230,7 @@
                         showhide.parentNode.removeChild(showhide);
                         plot(g, orig_unit, orig_total_unit, orig_lines, stack, !proportion_view);
                     })
-                    .attr("style", "color:blue;text-decoration:underline;cursor:pointer");
+                    .attr("style", "cursor:pointer");
             }
             
             for(var i = 0; i < lines.length; ++i) {
@@ -255,7 +255,7 @@
             p_after.append("a")
                 .text('Show/hide table')
                 .on('click', function() { table_div.style.display = table_div.style.display == "block" ? "none" : "block" })
-                .attr("style", "color:blue;text-decoration:underline;cursor:pointer");
+                .attr("style", "cursor:pointer");
             
             var w = 1000;
             var h = 380;
@@ -575,7 +575,7 @@
         d3.select("#period_chooser").selectAll().data(periods).enter().append("a")
             .text(function(period) { return period })
             .attr('href', function(period){ return "?" + period })
-            .attr("style", function(d, i) { return (i == 0 ? "" : "margin-left:.4em;") + "color:blue;text-decoration:underline;cursor:pointer" });
+            .attr("style", function(d, i) { return (i == 0 ? "" : "margin-left:.4em;") + "cursor:pointer" });
         period = window.location.search.substr(1);
         if(period.length < 3) {
             window.location.search = "Day";

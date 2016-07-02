@@ -44,7 +44,7 @@
 
         function LoadData() {
             $("#blocks").html("<tr><th>ID</th><th>Time</th><th>Hash / Explorer link</th><th>Share</th></tr>");
-            $("#payouts").html("<tr><th>address</th><th>amount in <span class=\"symbol\"></span></th></tr>");
+            $("#payouts").html("<tr><th>Address</th><th>Amount in <span class=\"symbol\"></span></th></tr>");
             function values(o) { res = []; for (var x in o) res.push(o[x]); return res; }
 
             d3.json('/web/version', function (version) {
@@ -78,35 +78,34 @@
                     tr.append('td').append('a').text(function (block) { return block.hash }).attr('href', function (block) { return currency_info.block_explorer_url_prefix + block.hash });
                     tr.append('td').append('a').text('→').attr('href', function (block) { return 'share.html#' + block.share });
                 });
-            });
-
-            $("#best_share").html("");
-            $("#verified_heads").html("");
-            $("#heads").html("");
-            $("#verified_tails").html("");
-            $("#tails").html("");
-            d3.json('/web/best_share_hash', function (c) {
-                d3.select('#best_share').append('a').attr('href', 'share.html#' + c).text(c.substr(-8));
-            });
-
-            function fill(url, id) {
-                d3.json(url, function (d) {
-                    d.sort()
-                    d3.select(id).selectAll().data(d).enter().append('span').text(' ').append('a').attr('href', function (c) { return 'share.html#' + c }).text(function (c) { return c.substr(-8) });
                 });
-            }
 
-            fill('/web/verified_heads', '#verified_heads');
-            fill('/web/heads', '#heads');
-            fill('/web/verified_tails', '#verified_tails');
-            fill('/web/tails', '#tails');
-            fill('../web/my_share_hashes', '#my_share_hashes');
+                $("#best_share").html("");
+                $("#verified_heads").html("");
+                $("#heads").html("");
+                $("#verified_tails").html("");
+                $("#tails").html("");
+                d3.json('/web/best_share_hash', function (c) {
+                    d3.select('#best_share').append('a').attr('href', 'share.html#' + c).text(c.substr(-8));
+                });
+
+                function fill(url, id) {
+                    d3.json(url, function (d) {
+                        d.sort()
+                        d3.select(id).selectAll().data(d).enter().append('span').text(' ').append('a').attr('href', function (c) { return 'share.html#' + c }).text(function (c) { return c.substr(-8) });
+                    });
+                }
+
+                fill('/web/verified_heads', '#verified_heads');
+                fill('/web/heads', '#heads');
+                fill('/web/verified_tails', '#verified_tails');
+                fill('/web/tails', '#tails');
+                fill('../web/my_share_hashes', '#my_share_hashes');
         }
         var plot1;
         var plot2;
+        function values(o) { res = []; for (var x in o) res.push(o[x]); return res; }
         function UpdateData() {
-            function values(o) { res = []; for (var x in o) res.push(o[x]); return res; }
-
             d3.json('/local_stats', function (local_stats) {
                 d3.select('#peers_in').text(local_stats.peers.incoming);
                 d3.select('#peers_out').text(local_stats.peers.outgoing);
@@ -120,14 +119,14 @@
                 d3.select('#shares_orphan').text(local_stats.shares.orphan);
                 d3.select('#shares_dead').text(local_stats.shares.dead);
 
-                d3.select('#efficiency').text(local_stats.efficiency != null ? d3.format('.4p')(local_stats.efficiency) : '???')
+                d3.select('#efficiency').text(local_stats.efficiency != null ? d3.format('.4p')(local_stats.efficiency) : '???');
                 d3.select('#uptime_days').text(d3.format('.3f')(local_stats.uptime / 60 / 60 / 24));
                 d3.select('#uptime_hours').text(d3.format('.3f')(local_stats.uptime / 60 / 60));
                 d3.select('#block_value').text(local_stats.block_value);
 
                 d3.select('#warnings').selectAll().data(local_stats.warnings).enter().append('p')
-                    .text(function (w) { return 'Warning: ' + w })
-                    .attr('style', 'color:red;border:1px solid red;padding:5px');
+                .text(function (w) { return 'Warning: ' + w })
+                .attr('style', 'color:red;border:1px solid red;padding:5px');
 
                 var time_to_share = local_stats.attempts_to_share / local;
                 d3.select('#time_to_share').text(d3.format('.3r')(time_to_share / 3600) + " hours");
@@ -152,20 +151,18 @@
                     if (plot2) { plot2.destroy(); }
                     $("#targetPlot2").remove();
                     $("#SpeedChart").append("<div id='targetPlot2'></div>");
-                    plot2 = jQuery.jqplot('targetPlot2', [data],
-                      {
-                          seriesDefaults: {
-                              // Make this a pie chart.
-                              renderer: jQuery.jqplot.PieRenderer,
-                              rendererOptions: {
-                                  // Put data labels on the pie slices.
-                                  // By default, labels show the percentage of the slice.
-                                  showDataLabels: true
-                              }
-                          },
-                          legend: { show: true, location: 'e' }
-                      }
-                    );
+                    plot2 = jQuery.jqplot('targetPlot2', [data], {
+                        seriesDefaults: {
+                            // Make this a pie chart.
+                            renderer: jQuery.jqplot.PieRenderer,
+                            rendererOptions: {
+                                    // Put data labels on the pie slices.
+                                    // By default, labels show the percentage of the slice.
+                                    showDataLabels: true
+                                }
+                            },
+                        legend: { show: true, location: 'e' }
+                    });
 
                 });
 
@@ -177,35 +174,26 @@
                 if (plot1) { plot1.destroy(); }
                 $("#targetPlot1").remove();
                 $("#ShareChart").append("<div id='targetPlot1'></div>");
-                plot1 = jQuery.jqplot('targetPlot1', [data],
-      {
-          seriesDefaults: {
-              // Make this a pie chart.
-              renderer: jQuery.jqplot.PieRenderer,
-              rendererOptions: {
-                  // Put data labels on the pie slices.
-                  // By default, labels show the percentage of the slice.
-                  showDataLabels: true
-              }
-          },
-          legend: { show: true, location: 'e' }
-      }
-    );
+                plot1 = jQuery.jqplot('targetPlot1', [data], {
+                    seriesDefaults: {
+                        // Make this a pie chart.
+                        renderer: jQuery.jqplot.PieRenderer,
+                        rendererOptions: {
+                            // Put data labels on the pie slices.
+                            // By default, labels show the percentage of the slice.
+                            showDataLabels: true
+                        }
+                    },
+                    legend: { show: true, location: 'e' }
+                });
 
-
-
-
+                /// pool speed grapg
+                plot_later(d3.select("#main-local"), "H/s", "H", [
+                    { "url": "/web/graph_data/local_hash_rate/last_" + period, "color": "#0000FF", "label": "Total" },
+                    { "url": "/web/graph_data/local_dead_hash_rate/last_" + period, "color": "#FF0000", "label": "Dead" }
+                ], 1000, 300);
 
             });
-
-
-
-
-            /// pool speed grapg
-            plot_later(d3.select("#main-local"), "H/s", "H", [
-                { "url": "/web/graph_data/local_hash_rate/last_" + period, "color": "#0000FF", "label": "Total" },
-                { "url": "/web/graph_data/local_dead_hash_rate/last_" + period, "color": "#FF0000", "label": "Dead" }
-            ], 1000, 300);
 
         }
 
@@ -276,42 +264,42 @@
 					<table class="table table-striped" style="width: 1300px">
 						<tbody>
 							<tr>
-							  <td><h5>Local rate</h5></td>
+							  <td><strong>Local rate</strong></td>
 							  <td><span id="local_rate" class="label"></span> (<span id="local_doa"></span> DOA)</td>
 							  <td></td>
-							  <td><h5>Expected time to share</h5></td>
+							  <td><strong>Expected time to share</strong></td>
 							  <td><span id="time_to_share" class="label"></span> (<span id="time_to_share_minute"></span> minutes)</td>
 							</tr>
 							<tr>
-							  <td><h5>Shares</h5></td>
+							  <td><strong>Shares</strong></td>
 							  <td><span id="shares_total" class="label"></span> total (<span id="shares_orphan" class="label label-warning"></span> orphaned, <span id="shares_dead" class="label label-warning"></span> dead) Efficiency: <span class="label label-info" id="efficiency"></span></td>
 							  <td></td>
-							  <td><h5>Payout if a block were found NOW</h5></td>
+							  <td><strong>Payout if a block were found NOW</strong></td>
 							  <td><span id="payout_amount" class="label"></span> <span class="symbol"></span></td>
 							</tr>
 							<tr>
-							  <td><h5>Pool rate</h5></td>
+							  <td><strong>Pool rate</strong></td>
 							  <td><span id="pool_rate" class="label label-inverse"></span> (<span id="pool_stale"></span> DOA+orphan)</td>
 							  <td></td>
-							  <td><h5>Share difficulty</h5></td>
+							  <td><strong>Share difficulty</strong></td>
 							  <td><span id="difficulty" class="label label-inverse"></span></td>
 							</tr>
 							<tr>
-							  <td><h5>Node uptime</h5></td>
+							  <td><strong>Node uptime</strong></td>
 							  <td><span id="uptime_days" class="label label-inverse"></span> (<span id="uptime_hours"></span> hours)</td>
 							  <td></td>
-							  <td><h5>Peers</h5></td>
+							  <td><strong>Peers</strong></td>
 							  <td><span id="peers_out"></span> out, <span id="peers_in"></span> in</td>
 							</tr>
                             <tr>
-							  <td><h5>Current block value</h5></td>
+							  <td><strong>Current block value</strong></td>
 							  <td><span id="block_value" class="label label-inverse"></span> <span class="symbol"></span></td>
 							  <td></td>
-							  <td><h5>Expected time to block</h5></td>
+							  <td><strong>Expected time to block</strong></td>
 							  <td><span id="time_to_block" class="label"></span></td>
 							</tr>
                             <tr>
-                                <td><h5>Warnings</h5></td>
+                                <td><strong>Warnings</strong></td>
                                 <td colspan="4"><div style="width: 450px; word-wrap: break-word;"><div id="warnings"></div></div></td>
                             </tr>
 						</tbody>
@@ -337,27 +325,27 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <td>Best share:</td>
+                                <td><strong>Best share</strong></td>
                                 <td><span id="best_share"></span></td>
                             </tr>
                             <tr>
-                                <td>Verified heads:</td>
+                                <td><strong>Verified heads</strong></td>
                                 <td><span id="verified_heads"></td>
                             </tr>
                             <tr>
-                                <td>Heads:</td>
+                                <td><strong>Heads</strong></td>
                                 <td><span id="heads"></span></td>
                             </tr>
                             <tr>
-                                <td>Verified tails:</td>
+                                <td><strong>Verified tails</strong></td>
                                 <td><span id="verified_tails"></td>
                             </tr>
                             <tr>
-                                <td>Tails:</td>
+                                <td><strong>Tails</strong></td>
                                 <td><span id="tails"></span></td>
                             </tr>
                             <tr>
-                                <td>My Shares:</td>
+                                <td><strong>My Shares</strong></td>
                                 <td><span id="my_share_hashes"></span></td>
                             </tr>
                         </tbody>
