@@ -140,6 +140,7 @@
 
                     var time_to_block = local_stats.attempts_to_block / global_stats.pool_hash_rate;
                     d3.select('#time_to_block').text(d3.format('.3r')(time_to_block / 3600) + " hours");
+                    d3.select('#time_to_block_days').text(d3.format('.3r')(time_to_block / 86400) + " days");
 
                     d3.select('#expected_payout_amount').text(d3.format('.3r')(local / global_stats.pool_hash_rate * local_stats.block_value * (1 - local_stats.donation_proportion)));
 
@@ -297,7 +298,7 @@
 							  <td><span id="block_value" class="label label-inverse"></span> <span class="symbol"></span></td>
 							  <td></td>
 							  <td><strong>Expected time to block</strong></td>
-							  <td><span id="time_to_block" class="label"></span></td>
+							  <td><span id="time_to_block_days" class="label"></span> (<span id="time_to_block"></span>)</td>
 							</tr>
                             <tr>
                                 <td><strong>Warnings</strong></td>
