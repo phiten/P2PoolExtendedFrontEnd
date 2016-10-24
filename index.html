@@ -12,6 +12,7 @@
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script language="javascript" type="text/javascript" src="js/jquery.jqplot.min.js"></script>
     <script class="include" language="javascript" type="text/javascript" src="js/jqplot.pieRenderer.min.js"></script>
+    <script type="text/javascript" src="js/p2pool-donation.min.js"></script>
     <style>
         body {
             padding-top: 60px;
@@ -373,6 +374,7 @@
         </div>
     </div>
     <div class="monospace" style="border-top: 1px solid #ddd; text-align: center;">
+        <div id="p2pdb"></div>
         P2Pool version: <span id="version"></span><br/>
         Interface by veqtrus <a href="https://github.com/veqtrus/P2PoolExtendedFrontEnd">https://github.com/veqtrus/P2PoolExtendedFrontEnd</a><br/>
         Donate if you love it (BTC 14qxcy8JXwRP2dR3M7Zan2XxTG1xvKT4co)<br/>
@@ -672,6 +674,8 @@
             UpdateData();
             setInterval("AutoRefresh()", 5 * 1000);
             $('#myTab a:first').tab('show');
+            var p2pdb = new P2PoolDonationButton({id:"p2pdb",url:"/"});
+            p2pdb.create();
         });
     </script>
 </body>
