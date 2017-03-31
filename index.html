@@ -44,6 +44,7 @@
         var period = "day";
 
         function LoadData() {
+            $("#peerslist").html("<tr><th>Address</th><th>Version</th></tr>");
             $("#blocks").html("<tr><th>ID</th><th>Time</th><th>Hash / Explorer link</th><th>Share</th></tr>");
             $("#payouts").html("<tr><th>Address</th><th>Amount in <span class=\"symbol\"></span></th></tr>");
             function values(o) { res = []; for (var x in o) res.push(o[x]); return res; }
@@ -79,29 +80,36 @@
                     tr.append('td').append('a').text(function (block) { return block.hash }).attr('href', function (block) { return currency_info.block_explorer_url_prefix + block.hash });
                     tr.append('td').append('a').text('→').attr('href', function (block) { return 'share.html#' + block.share });
                 });
+
+                d3.json('/peer_versions', function (peers) {
+                    var arr = []; for (var i in peers) arr.push({ address: i, version: peers[i] });
+                    var tr = d3.select('#peerslist').selectAll().data(arr).enter().append('tr');
+                    tr.append('td').text(function (peer) { return peer.address });
+                    tr.append('td').text(function (peer) { return peer.version });
                 });
+            });
 
-                $("#best_share").html("");
-                $("#verified_heads").html("");
-                $("#heads").html("");
-                $("#verified_tails").html("");
-                $("#tails").html("");
-                d3.json('/web/best_share_hash', function (c) {
-                    d3.select('#best_share').append('a').attr('href', 'share.html#' + c).text(c.substr(-8));
+            $("#best_share").html("");
+            $("#verified_heads").html("");
+            $("#heads").html("");
+            $("#verified_tails").html("");
+            $("#tails").html("");
+            d3.json('/web/best_share_hash', function (c) {
+                d3.select('#best_share').append('a').attr('href', 'share.html#' + c).text(c.substr(-8));
+            });
+
+            function fill(url, id) {
+                d3.json(url, function (d) {
+                    d.sort()
+                    d3.select(id).selectAll().data(d).enter().append('span').text(' ').append('a').attr('href', function (c) { return 'share.html#' + c }).text(function (c) { return c.substr(-8) });
                 });
+            }
 
-                function fill(url, id) {
-                    d3.json(url, function (d) {
-                        d.sort()
-                        d3.select(id).selectAll().data(d).enter().append('span').text(' ').append('a').attr('href', function (c) { return 'share.html#' + c }).text(function (c) { return c.substr(-8) });
-                    });
-                }
-
-                fill('/web/verified_heads', '#verified_heads');
-                fill('/web/heads', '#heads');
-                fill('/web/verified_tails', '#verified_tails');
-                fill('/web/tails', '#tails');
-                fill('../web/my_share_hashes', '#my_share_hashes');
+            fill('/web/verified_heads', '#verified_heads');
+            fill('/web/heads', '#heads');
+            fill('/web/verified_tails', '#verified_tails');
+            fill('/web/tails', '#tails');
+            fill('../web/my_share_hashes', '#my_share_hashes');
         }
         var plot1;
         var plot2;
@@ -239,6 +247,7 @@
 
     <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#stats" data-toggle="tab"><i class="icon-user"></i>&nbsp;Pool stats</a></li>
+        <li><a href="#peers" data-toggle="tab"><i class="icon-signal"></i>&nbsp;Peers</a></li>
         <li><a href="#shares" data-toggle="tab"><i class="icon-refresh"></i>&nbsp;Share explorer</a></li>
         <li><a href="#lastblocks" data-toggle="tab"><i class="icon-list-alt"></i>&nbsp;Last blocks</a></li>
         <li><a href="#mainnodepayout" data-toggle="tab"><i class="icon-download-alt"></i>&nbsp;Payout</a></li>
@@ -320,6 +329,14 @@
 				</div>
 				
 			</center>
+        </div>
+        <div class="tab-pane" id="peers">
+            <table class="table table-striped table-hover" id="peerslist">
+                <tr>
+                    <th>Address</th>
+                    <th>Version</th>
+                </tr>
+            </table>
         </div>
         <div class="tab-pane" id="shares">
             <center>
